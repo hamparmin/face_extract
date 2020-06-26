@@ -1,28 +1,32 @@
 #load dependencies
 import cv2
-from pathlib import Path
+import os
 from rm_background import replace_background
 from face_crop import cropper
 import numpy as np
 
-#specify paths
-original_path="images\\test1.jpg"
-background_removed_path="images\\clean.jpg"
-cropped_path="images\\cropped.jpg"
+#after placing images in images folder
+image_names=os.listdir("images\\")
 
-#run background removal
-replace_background(original_path, background_removed_path)
+def extract(image_name):
+    original_path="images\\"+image_name
+    bg_rm_path="images\\"+"bg_rm_"+image_name
+    cropped_path="images\\"+"cropped_"+image_name
+    #run background removal
+    replace_background(original_path, bg_rm_path)
 
-#run face crop
-cropper(background_removed_path, cropped_path)
+    #run face crop
+    cropper(bg_rm_path, cropped_path)
+
+#main loop
+for i in image_names:
+    extract(i)
 
 #display images
-img1=cv2.imread(original_path)
-img2=cv2.imread(background_removed_path)
-img3=cv2.imread(cropped_path)
+#   img3=cv2.imread(cropped_path)
 
-numpy_horizontal = np.hstack((img1,img2,img3))
+# numpy_horizontal = np.hstack((img1,img2,img3))
 
-cv2.imshow(numpy_horizontal)
+# cv2.imshow(numpy_horizontal)
 
-cv2.waitKey(0)
+# cv2.waitKey(0)
